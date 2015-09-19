@@ -12,6 +12,7 @@
     <!-- Stylesheets & Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:100,400,300,700' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Raleway:100,400' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="animate.css">
     <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 
@@ -24,10 +25,33 @@
     </div>
 
     <!-- Welcome Screen -->
-    <div id="welcome">
-        <h1>Welcome to the future of travel planning.</h1>
-        <p>You have arrived at Travel Genius, an online platform that helps you easily transform your travel ideas into reality. Are you ready? Click the button below to get started!</p>
-        <button>Start Here</button>
+    <div id="screen1">
+        <div id="welcome">
+            <h1>Welcome to the future of travel planning.</h1>
+            <p>Travel Genius is an online platform that will help you transform your travel ideas into reality. Are you ready? Click the button below to get started!</p>
+            <button id="start">Start Here</button>
+        </div>
+    </div>
+    <div id="screen2">
+        <div id="options">
+            <h1>Options</h1>
+            <label>Travelling from
+                <input type="text" id="begin"> to
+                <input type="text" id="end">
+            </label>
+            <label>When?
+                <input type="text" id="start"> to
+                <input type="text" id="stop">
+            </label>
+            <label>Interests?
+                <input type="text" id="interests" placeholder="e.g. beaches, skydiving, coding">
+            </label>
+            <button id="generate">Generate Trip</button>
+        </div>
+    </div>
+    <div id="screen3">
+        <div id="calendar">
+        </div>
     </div>
 
     <!-- Footer With Credits -->
@@ -36,7 +60,8 @@
     </div>
 
     <!-- JS Scripts -->
-    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="./js/jquery.js"></script>
+     <script type="text/javascript" src="./js/places.js"></script>
     <script type="text/javascript" src="./js/generate.js"></script>
     <script type="text/javascript" src="./js/main.js"></script>
 </body>

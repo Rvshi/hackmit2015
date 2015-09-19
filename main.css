@@ -16,6 +16,16 @@ body {
     box-sizing: border-box;
 }
 
+#screen1 {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    text-align: center;
+    display: none;
+}
+
 #welcome {
     background-color: rgba(0, 0, 0, 0.3);
     width: 600px;
@@ -27,13 +37,6 @@ body {
     margin-bottom: 0;
     border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-#logo {
-    font-size: 100px;
-    line-height: 40px;
-    margin: 5px auto;
-    font-family: 'Raleway', sans-serif;
 }
 
 #welcome h1 {
@@ -116,4 +119,158 @@ body {
     bottom: 10px;
     position: fixed;
     text-align: center;
+}
+
+#screen2 {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    display: none;
+}
+
+#options {
+    background-color: rgba(0, 0, 0, 0.3);
+    width: auto;
+    display: inline-block;
+    padding: 30px 50px;
+    border-radius: 20px;
+    color: white;
+    margin: 150px auto;
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    font-size: 20px;
+}
+
+#options h1 {
+    font-size: 58px;
+    font-family: 'Raleway', sans-serif;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    margin-left: 10px;
+    padding: 6px;
+    display: inline-block;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: inherit;
+    color: rgba(0, 0, 0, 0.9);
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.6);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    text-align: center;
+    outline: 0;
+    border: 0;
+}
+
+#interests {
+    margin-top: 10px;
+    width: 100%;
+}
+
+::-webkit-input-placeholder {
+    /* WebKit, Blink, Edge */
+    color: #555;
+}
+
+:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: #555;
+    opacity: 1;
+}
+
+::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: #555;
+    opacity: 1;
+}
+
+:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: #555;
+}
+
+#generate {
+    z-index: 999;
+    border-radius: 6px;
+    box-sizing: border-box;
+    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.45);
+    border: 2px solid white;
+    overflow: hidden;
+    padding: 10px 20px;
+    font-size: 40px;
+    color: #ddd;
+    background-color: rgba(18, 126, 236, 0.7);
+    text-align: center;
+    cursor: pointer;
+    outline: 0;
+    border: 0;
+    font-weight: 400;
+    font-family: 'Raleway', sans-serif;
+    transition: .6s;
+    margin-top: 3px;
+}
+
+#generate:hover {
+    background-color: rgba(18, 126, 236, 0.9);
+    color: white;
+}
+
+#calendar {
+    margin-top: 120px;
+}
+
+.day {
+    background-color: rgba(0, 0, 0, 0.3);
+    width: 400px;
+    display: inline-block;
+    padding: 20px 20px;
+    border-radius: 10px;
+    color: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: left;
+}
+
+.display {
+    padding-left: 10px;
+    border-left: 2px solid white;
+    position: relative;
+}
+
+.timeDiv {
+    height: 50px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    vertical-align: top;
+    padding-top: 10px;
+    font-size: 15px;
+}
+
+.event {
+    position: absolute;
+    left: 80px;
+    width: 280px;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: inline-block;
+    padding: 10px 20px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.event h1 {
+    margin: 0 auto;
+}
+.event p {
+    margin: 0;
+    margin-top: 10px;
 }
