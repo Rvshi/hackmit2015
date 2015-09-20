@@ -13,6 +13,8 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:100,400,300,700' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Raleway:100,400' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="animate.css">
+    <link rel="stylesheet" type="text/css" href="jquery-ui.min.css">
+
     <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 
@@ -36,17 +38,23 @@
         <div id="options">
             <h1>Options</h1>
             <label>Travelling from
-                <input type="text" id="begin"> to
-                <input type="text" id="end">
+                <div class="city" id="begin">
+                    <input type="text">
+                    <div class="autoComplete">BEJ</div>
+                </div> to
+                <div class="city" id="end">
+                    <input type="text">
+                    <div class="autoComplete"></div>
+                </div>
             </label>
             <label>When?
-                <input type="text" id="start"> to
-                <input type="text" id="stop">
+                <input type="text" id="timeStart"> to
+                <input type="text" id="timeStop">
             </label>
             <label>Interests?
                 <input type="text" id="interests" placeholder="e.g. beaches, skydiving, coding">
             </label>
-            <button id="generate">Generate Trip</button>
+            <button id="generate" class="normal"><div id="gen">Generate Trip</div><div id="loading"></div></button>
         </div>
     </div>
     <div id="screen3">
@@ -61,7 +69,7 @@
 
     <!-- JS Scripts -->
     <script type="text/javascript" src="./js/jquery.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCMcdBscN9k6HshStI5JBdKh_F7b_Ql304&libraries=places"></script>
+    <script type="text/javascript" src="./js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="./js/places.js"></script>
     <script type="text/javascript" src="./js/generate.js"></script>
     <script type="text/javascript" src="./js/travelgenius.js"></script>

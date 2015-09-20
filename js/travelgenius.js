@@ -1,4 +1,8 @@
 $(function () {
+    $("#timeStart").datepicker();
+    $("#timeStop").datepicker();
+
+
     $('#screen2').css('right', -1 * $(window).width());
 
     $('#start').click(function () {
@@ -12,11 +16,7 @@ $(function () {
     });
 
     $('#generate').click(function () {
-        $('#screen2').animate({
-            right: $(window).width()
-        });
-        $('#screen3').fadeIn(0);
-        generateParser(schedule);
+        generateSchedule();
     });
 
 
@@ -96,7 +96,6 @@ $(function () {
         blockWidth = 350 + 20;
 
     function generateParser(schedule) {
-
         $('#calendar').css('width', schedule.days.length * blockWidth);
 
         var day = 0,
@@ -161,8 +160,8 @@ $(function () {
         }
         dayLoop();
     }
-    
-     function getFlights(origin, destination, departure_date, return_date, number_of_results, apikey) {
+
+    function getFlights(origin, destination, departure_date, return_date, number_of_results, apikey) {
         var Url = "http://api.sandbox.amadeus.com/v1.2/flights/low-fare-search?" +
             "origin=" + origin +
             "&destination=" + destination +
@@ -211,7 +210,34 @@ $(function () {
             flt.timeEnd = (response.results[0].itineraries[0].inbound.flights[i].arrives_at);
             retflights.push(flt);
         }
+        $('#screen2').animate({
+            right: $(window).width()
+        });
+        $('#screen3').fadeIn(0);
+        generateParser(schedule);
     }
 
-    //getFlights("BOS", "ATL", "2015-10-15", "2015-10-19", "FD", "DF");
+    function generateSchedule() {
+        var interests = $('#interests').val().split(/[,]+/),
+            origin = $('#begin input').val(),
+            destination = $('#end input').val(),
+            tS = $('#timeStart').val(),
+            tE = $('#timeStop').val();
+        if ((tS == '' || tE == '') || (origin == '' || destination == '')) {} else {
+            // This starts everything
+            $('#gen').fadeOut(0);
+            $('#generate').addClass('loading');
+            $('#loading').fadeIn(400);
+
+            getFlights(origin, destination, reformat(tS), reformat(tE), "FD", "DF");
+        }
+    }
+
+    function reformat(date) {
+        var dt = new Date(date),
+            mth = dt.getMonth() + 1,
+            month = mth > 9 ? mth : '0' + mth,
+            date = dt.getDate() > 9 ? dt.getDate() : '0' + dt.getMonth();
+        return dt.getFullYear() + '-' + month + '-' + date;
+    }
 });

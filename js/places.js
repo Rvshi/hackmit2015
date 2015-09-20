@@ -1,34 +1,88 @@
-/*
 $(function () {
-    var map;
-    var service;
-    var infowindow;
+    /*function getCity_ID(dest_city) {
+	var Url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?"+
+	"input="+input+
+	"&types="+"geocode"+
+	"&key="+"AIzaSyD9WIWFg0D2iGnTq12mM6vDmfEOeLQ4LiE";
+	var json
+	var m = $.ajax({
+    	url: Url,
+    	type: 'GET',
+    	data: {},
+    	dataType: 'json',
+    	success: function (city) {
+        	json = city;
+        	city_id = json.predictions.place_id;
+        	return city_id;
+    	}
+	});
+	return m;
+	//var response = JSON.parse(json);
+    
+}
 
-    function initialize() {
-        var pyrmont = new google.maps.LatLng(-33.8665433, 151.1956316);
+function getLocation(placeid){
+	//location=-33.8670,151.1957
+	var URL = "https://maps.googleapis.com/maps/api/place/details/json?"+
+	"placeid="+placeid+
+	"&key="+AIzaSyD9WIWFg0D2iGnTq12mM6vDmfEOeLQ4LiE;
+	var json
+	var u = $.ajax({
+    	url: URL,
+    	type: 'GET',
+    	data: {},
+    	dataType: 'json',
+    	success: function (city_info) {
+        	json = city_info;
+        	city_loc = json.result.geometry.location.lat+result.geometry.location.lng;
+        	return city_loc;
+    	}
+	});    
+	return u;
+}*/
 
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: pyrmont,
-            zoom: 15
-        });
+    function getBusinesses(location, radius, interests, key, days) {
+        for (var i = 0; i < interests.length; i++) {
+            var URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
+                "location=" + location +
+                "&radius=" + radius +
+                "&name=" + interests[i] +
+                "&key=" + key;
 
-        var request = {
-            location: pyrmont,
-            radius: '500',
-            query: 'restaurant'
-        };
-
-        service = new google.maps.places.PlacesService(map);
-        service.textSearch(request, callback);
-    }
-
-    function callback(results, status) {
-        if (status == google.maps.places.PlacesServiceStatus.OK) {
-            for (var i = 0; i < results.length; i++) {
-                var place = results[i];
-                console.log(place);
-            }
+            $.ajax({
+                url: URL,
+                type: 'GET',
+                dataType: 'json',
+                jsonpCallback: 'callback',
+                success: function (json) {
+                    console.log(json);
+                    processBuisnesses(json);
+                }
+            });
         }
     }
-    initialize();
-});*/
+
+    function processBuisnesses(results) {
+        var businesses = [];
+        var wrapper = [];
+        /*
+           
+        
+        var retval;
+        var counter = 0;
+        while (counter < 10 * days) {
+            for (var i = 0; i < wrapper.length; i++) {
+                for (var j = 0; j < wrapper.length; j++) {
+                    if (i < wrapper[i].length) {
+                        retval.push(wrapper[j][i]);
+                        counter = counter + 1;
+                    }
+                }
+            }
+        }
+        return retval;
+        */
+    }
+
+    var businesses = getBusinesses("-33.8670,151.1957", "800", ["entertainment"], "AIzaSyAGi3TztX-WpOY91yWTjSydQwm7qmzhQi0", 5);
+});
