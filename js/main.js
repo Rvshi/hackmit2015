@@ -12,16 +12,26 @@ $(function () {
     });
 
     $('#generate').click(function () {
-        $('#screen2').fadeOut(0);
-        $('#screen3').fadeIn();
         $('#screen2').animate({
-            right: 0
+            right: $(window).width()
         });
+        $('#screen3').fadeIn(0);
+        generateParser(schedule);
     });
 
 
     var schedule = {
         "days": [
+            {
+                "date": "9/18/2015",
+                "events": [
+                    {
+                        "name": "Flight from RDU",
+                        "timeStart": "7:30 PM",
+                        "timeEnd": "10:45 PM",
+                        "type": "flight"
+                    }]
+            },
             {
                 "date": "9/19/2015",
                 "events": [
@@ -32,21 +42,72 @@ $(function () {
                         "type": "placeholder"
                     },
                     {
+                        "name": "Lunch",
+                        "timeStart": "11:00 AM",
+                        "timeEnd": "12:00 PM",
+                        "type": "placeholder"
+                    },
+                    {
                         "name": "Visit MIT Library",
                         "timeStart": "2:00 PM",
                         "timeEnd": "4:00 PM",
                         "type": "suggested"
+                    },
+                    {
+                        "name": "Visit TD Garden",
+                        "timeStart": "5:20 PM",
+                        "timeEnd": "6:30 PM",
+                        "type": "suggested"
+                    },
+                    {
+                        "name": "Party",
+                        "timeStart": "7:10 PM",
+                        "timeEnd": "10:40 PM",
+                        "type": "suggested"
+                    }]
+            },
+            {
+                "date": "9/20/2015",
+                "events": [
+                    {
+                        "name": "Lunch",
+                        "timeStart": "11:00 AM",
+                        "timeEnd": "12:00 PM",
+                        "type": "placeholder"
+                    },
+                    {
+                        "name": "Go to Paul Revere Museum",
+                        "timeStart": "2:00 PM",
+                        "timeEnd": "4:00 PM",
+                        "type": "suggested"
+                    },
+                    {
+                        "name": "Flight to RDU",
+                        "timeStart": "5:30 PM",
+                        "timeEnd": "8:25 PM",
+                        "type": "flight"
                     }]
             }
         ]
     }
 
-    var blockHeight = '60px';
+    var blockHeight = 60,
+        totHeight = 0,
+        blockWidth = 350 + 20;
 
     function generateParser(schedule) {
-        for (var day = 0; day < schedule.days.length; ++day) {
-            var currentDay = schedule.days[day];
-            var html = '<div class="day animated fadeIn" data-date="' + day + '" ><h1>' + currentDay.date + '</h1><div class="display">';
+
+        $('#calendar').css('width', schedule.days.length * blockWidth);
+
+        var day = 0,
+            dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+        function dayLoop() {
+            var currentDay = schedule.days[day],
+                dName = new Date(currentDay.date),
+                dayName = dayNames[dName.getUTCDay()];
+
+            var html = '<div class="day animated fadeInRight" data-date="' + day + '" ><h1>' + dayName + ' <div class="dateDisplay">' + currentDay.date + '</div></h1><div class="display">';
             var counter = 0; //counts hour segs.
             var scale = [8, 23];
 
@@ -63,56 +124,41 @@ $(function () {
 
             // Print out each event in the day
             var $currentDiv = $('.day[data-date="' + day + '"]').children('.display'),
-                totHeight = counter * blockHeight,
                 dayEvents = currentDay.events,
                 e = 0;
+            totHeight = counter * blockHeight;
 
             function timeout() {
+                var top = findSpot(dayEvents[e].timeStart, true),
+                    bottom = findSpot(dayEvents[e].timeEnd, false);
+
                 setTimeout(function () {
-                    $currentDiv.append('<div class="event ' + dayEvents[e].type + ' animated fadeInUp"><h1>' + dayEvents[e].name + '</h1><p>' + dayEvents[e].timeStart + ' - ' + dayEvents[e].timeEnd + '</p></div>');
+                    $currentDiv.append('<div class="event ' + dayEvents[e].type + ' animated fadeInUp" style="top:' + top + '; bottom:' + bottom + '"><h1>' + dayEvents[e].name + '</h1><p>' + dayEvents[e].timeStart + ' - ' + dayEvents[e].timeEnd + '</p></div>');
                     if (e < (dayEvents.length - 1)) {
                         ++e;
                         timeout();
+                    } else {
+                        if (day < (schedule.days.length - 1)) {
+                            ++day;
+                            dayLoop();
+                        }
                     }
                 }, 300);
             }
+
+            function findSpot(time, top) {
+                var d = new Date("9/10/2015 " + time),
+                    raw = d.getHours(),
+                    delta = scale[1] - scale[0],
+                    result = totHeight * ((raw - scale[0]) / delta);
+
+                if (top)
+                    return result + 'px';
+                else
+                    return totHeight - result + 'px';
+            }
             timeout();
         }
+        dayLoop();
     }
-    generateParser(schedule);
-
-
-
-    function getFlights(origin, destination, departure_date, return_date, number_of_results, apikey) {
-        var Url = "http://api.sandbox.amadeus.com/v1.2/flights/low-fare-search?" +
-            "origin=" + origin +
-            "&destination=" + destination +
-            "&departure_date=" + departure_date +
-            "&return_date=" + return_date +
-            "&number_of_results=" + "1" +
-            "&apikey=" + "PmD367pC6G8DrAXWLNPLw5UC3NM7R1n2";
-        //$('.out').html(Url);
-
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", Url, true); // false for synchronous request
-        xmlHttp.send(null);
-        var json = xmlHttp.responseText;
-
-        $('.out').html(json);
-
-        //$('.out').html(json);
-        /*var response = JSON.parse(json);
-    	$('.out').html(response);
-    
-	var outFlights = response.results[0].itineraries[0].outbound.flights;
-	var inFlights = response.results[0].itineraries[0].inbound.flights;
-	var events = [];
-    
-	var outDep = response.results[0].itineraries[0].outbound.flights["departs_at"];
-	var outArr = response.results[0].itineraries[0].outbound.flights["arrives_at"];
-	var inDep = response.results[0].itineraries[0].inbound.flights["departs_at"];
-	var inArr = response.results[0].itineraries[0].inbound.flights["arrives_at"]; */
-    }
-
-    getFlights("BOS", "ATL", "2015-10-15", "2015-10-19", "FD", "DF");
 });
