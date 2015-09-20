@@ -161,4 +161,57 @@ $(function () {
         }
         dayLoop();
     }
+    
+     function getFlights(origin, destination, departure_date, return_date, number_of_results, apikey) {
+        var Url = "http://api.sandbox.amadeus.com/v1.2/flights/low-fare-search?" +
+            "origin=" + origin +
+            "&destination=" + destination +
+            "&departure_date=" + departure_date +
+            "&return_date=" + return_date +
+            "&number_of_results=" + "1" +
+            "&apikey=" + "PmD367pC6G8DrAXWLNPLw5UC3NM7R1n2";
+
+        var response;
+        $.ajax({
+            url: Url,
+            type: 'GET',
+            data: {},
+            dataType: 'json',
+            success: function (flights) {
+                handleFlights(flights);
+            }
+        });
+    }
+
+    function handleFlights(response) {
+        var retflights = [];
+        var outFlights = response.results[0].itineraries[0].outbound.flights;
+        for (var i = 0; i < outFlights.length; i++) {
+            var flt = {
+                "name": "",
+                "timeStart": "",
+                "timeEnd": "",
+                "type": "flight"
+            };
+            flt.name = ("Flight from " + response.results[0].itineraries[0].outbound.flights[i].origin.airport + " &#8594; " + response.results[0].itineraries[0].outbound.flights[i].destination.airport);
+            flt.timeStart = (response.results[0].itineraries[0].outbound.flights[i].departs_at);
+            flt.timeEnd = (response.results[0].itineraries[0].outbound.flights[i].arrives_at);
+            retflights.push(flt);
+        }
+        var inFlights = response.results[0].itineraries[0].inbound.flights;
+        for (var i = 0; i < inFlights.length; i++) {
+            var flt = {
+                "name": "",
+                "timeStart": "",
+                "timeEnd": "",
+                "type": "flight"
+            };
+            flt.name = ("Flight from " + response.results[0].itineraries[0].inbound.flights[i].origin.airport + " &#8594; " + response.results[0].itineraries[0].inbound.flights[i].destination.airport);
+            flt.timeStart = (response.results[0].itineraries[0].inbound.flights[i].departs_at);
+            flt.timeEnd = (response.results[0].itineraries[0].inbound.flights[i].arrives_at);
+            retflights.push(flt);
+        }
+    }
+
+    //getFlights("BOS", "ATL", "2015-10-15", "2015-10-19", "FD", "DF");
 });

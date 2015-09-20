@@ -1,24 +1,34 @@
-$(function() {
-	
-	var inputlocation = "Boston";
-	var idFinder = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=" + inputlocation + "&types=geocode&key=AIzaSyD9WIWFg0D2iGnTq12mM6vDmfEOeLQ4LiE";
-	
-	var id = "AIzaSyD9WIWFg0D2iGnTq12mM6vDmfEOeLQ4LiE";
-	var url = "https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyD9WIWFg0D2iGnTq12mM6vDmfEOeLQ4LiE&placeid=" + id;
+/*
+$(function () {
+    var map;
+    var service;
+    var infowindow;
 
+    function initialize() {
+        var pyrmont = new google.maps.LatLng(-33.8665433, 151.1956316);
 
-//results.id
-	$.ajax({
-	        url: idFinder,
-	        type: 'GET',
-	        data: {},
-	        dataType: 'json',
-	        success: function (cities) {
-	            console.log(cities);
-	        }
-	});
-	
-	/**for the arrray
-	result.opening_hours.periods
-	**/
-});
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: pyrmont,
+            zoom: 15
+        });
+
+        var request = {
+            location: pyrmont,
+            radius: '500',
+            query: 'restaurant'
+        };
+
+        service = new google.maps.places.PlacesService(map);
+        service.textSearch(request, callback);
+    }
+
+    function callback(results, status) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+            for (var i = 0; i < results.length; i++) {
+                var place = results[i];
+                console.log(place);
+            }
+        }
+    }
+    initialize();
+});*/

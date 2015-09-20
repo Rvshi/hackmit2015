@@ -1,1 +1,3 @@
-function generate(src) {}
+$(function () {
+   
+});
