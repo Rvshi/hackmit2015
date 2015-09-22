@@ -1,5 +1,6 @@
+
 $(function () {
-    /*function getCity_ID(dest_city) {
+    function getCity_ID(dest_city) {
 	var Url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?"+
 	"input="+input+
 	"&types="+"geocode"+
@@ -39,16 +40,11 @@ function getLocation(placeid){
     	}
 	});    
 	return u;
-}*/
+}
 
     function getBusinesses(location, radius, interests, key, days) {
-        for (var i = 0; i < interests.length; i++) {
-            var URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
-                "location=" + location +
-                "&radius=" + radius +
-                "&name=" + interests[i] +
-                "&key=" + key;
-
+        var URL = "http://dev.virtualearth.net/REST/v1/Locations/47.64054,-122.12934?key=AuEjWvZegTbIQkAKe5wK18OsG7jWDleX7I7jihW0TOvig4M_2gAWvjW4lgoI27P1";
+ console.log(URL);
             $.ajax({
                 url: URL,
                 type: 'GET',
@@ -59,14 +55,11 @@ function getLocation(placeid){
                     processBuisnesses(json);
                 }
             });
-        }
     }
 
     function processBuisnesses(results) {
         var businesses = [];
         var wrapper = [];
-        /*
-           
         
         var retval;
         var counter = 0;
@@ -81,7 +74,6 @@ function getLocation(placeid){
             }
         }
         return retval;
-        */
     }
 
     var businesses = getBusinesses("-33.8670,151.1957", "800", ["entertainment"], "AIzaSyAGi3TztX-WpOY91yWTjSydQwm7qmzhQi0", 5);

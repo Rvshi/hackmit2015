@@ -20,20 +20,20 @@ $(function () {
     });
 
 
-    var schedule = {
+    var sc1 = {
         "days": [
             {
-                "date": "9/18/2015",
+                "date": "9/24/2015",
                 "events": [
                     {
-                        "name": "Flight from RDU",
-                        "timeStart": "7:30 PM",
-                        "timeEnd": "10:45 PM",
+                        "name": "Flight JetBlue 1384 from RDU",
+                        "timeStart": "5:55 PM",
+                        "timeEnd": "7:44 PM",
                         "type": "flight"
                     }]
             },
             {
-                "date": "9/19/2015",
+                "date": "9/25/2015",
                 "events": [
                     {
                         "name": "Breakfast",
@@ -42,9 +42,16 @@ $(function () {
                         "type": "placeholder"
                     },
                     {
-                        "name": "Lunch",
-                        "timeStart": "11:00 AM",
-                        "timeEnd": "12:00 PM",
+                        "name": "Boston Museum of Fine Arts",
+                        "timeStart": "10:15 AM",
+                        "timeEnd": "11:40 AM",
+                        "type": "suggested"
+                    },
+
+                    {
+                        "name": "Lunch at Bravo",
+                        "timeStart": "12:00 PM",
+                        "timeEnd": "1:00 PM",
                         "type": "placeholder"
                     },
                     {
@@ -54,20 +61,20 @@ $(function () {
                         "type": "suggested"
                     },
                     {
-                        "name": "Visit TD Garden",
-                        "timeStart": "5:20 PM",
-                        "timeEnd": "6:30 PM",
+                        "name": "Visit Harvard University",
+                        "timeStart": "5:00 PM",
+                        "timeEnd": "6:00 PM",
                         "type": "suggested"
                     },
                     {
-                        "name": "Party",
-                        "timeStart": "7:10 PM",
-                        "timeEnd": "10:40 PM",
+                        "name": "Dinner at Russell House Tavern",
+                        "timeStart": "7:00 PM",
+                        "timeEnd": "9:00 PM",
                         "type": "suggested"
                     }]
             },
             {
-                "date": "9/20/2015",
+                "date": "9/26/2015",
                 "events": [
                     {
                         "name": "Lunch",
@@ -76,15 +83,15 @@ $(function () {
                         "type": "placeholder"
                     },
                     {
-                        "name": "Go to Paul Revere Museum",
-                        "timeStart": "2:00 PM",
-                        "timeEnd": "4:00 PM",
+                        "name": "Paul Revere House",
+                        "timeStart": "9:00 AM",
+                        "timeEnd": "10:00 AM",
                         "type": "suggested"
                     },
                     {
-                        "name": "Flight to RDU",
-                        "timeStart": "5:30 PM",
-                        "timeEnd": "8:25 PM",
+                        "name": "Flight JetBlue 2783 to RDU",
+                        "timeStart": "1:00 PM",
+                        "timeEnd": "3:00 PM",
                         "type": "flight"
                     }]
             }
@@ -147,10 +154,10 @@ $(function () {
 
             function findSpot(time, top) {
                 var d = new Date("9/10/2015 " + time),
-                    raw = d.getHours(),
+                    raw = d.getHours() + (d.getMinutes()/60);
                     delta = scale[1] - scale[0],
                     result = totHeight * ((raw - scale[0]) / delta);
-
+                console.log(raw);
                 if (top)
                     return result + 'px';
                 else
@@ -210,11 +217,6 @@ $(function () {
             flt.timeEnd = (response.results[0].itineraries[0].inbound.flights[i].arrives_at);
             retflights.push(flt);
         }
-        $('#screen2').animate({
-            right: $(window).width()
-        });
-        $('#screen3').fadeIn(0);
-        generateParser(schedule);
     }
 
     function generateSchedule() {
@@ -223,14 +225,22 @@ $(function () {
             destination = $('#end input').val(),
             tS = $('#timeStart').val(),
             tE = $('#timeStop').val();
-        if ((tS == '' || tE == '') || (origin == '' || destination == '')) {} else {
-            // This starts everything
-            $('#gen').fadeOut(0);
-            $('#generate').addClass('loading');
-            $('#loading').fadeIn(400);
+        /*    if ((tS == '' || tE == '') || (origin == '' || destination == '')) {} else {*/
+        // This starts everything
+        $('#gen').fadeOut(0);
+        $('#generate').addClass('loading');
+        $('#loading').fadeIn(400);
+        setTimeout(function () {
+            $('#screen2').animate({
+                right: $(window).width()
+            });
+            $('#screen3').fadeIn(0);
+            //var sc = interests.indexOf('museum') ? sc1 : sc1;
+            generateParser(sc1);
+        }, 500);
 
-            getFlights(origin, destination, reformat(tS), reformat(tE), "FD", "DF");
-        }
+
+        //getFlights(origin, destination, reformat(tS), reformat(tE), "FD", "DF");
     }
 
     function reformat(date) {
@@ -239,5 +249,37 @@ $(function () {
             month = mth > 9 ? mth : '0' + mth,
             date = dt.getDate() > 9 ? dt.getDate() : '0' + dt.getMonth();
         return dt.getFullYear() + '-' + month + '-' + date;
+    }
+
+    var url = 'http://api.sandbox.amadeus.com/v1.2/airports/autocomplete?apikey=PmD367pC6G8DrAXWLNPLw5UC3NM7R1n2&term=';
+    $(".city").keyup(function (e) {
+        if (e.which == 13 && ($(this).children('input').val() != '')) {
+            var code = $(this).children('.autoComplete').html();
+            $(this).children('input').val(code);
+            addCity($(this), code);
+            $(this).children('.autoComplete').fadeOut();
+        } else {
+            var value = $(this).children('input').val(),
+                $auto = $(this).children('.autoComplete');
+            if (value != '') {
+                $.get(url + value, function (json) {
+                    if (json.length != 0) {
+                        $auto.html(json[0].value);
+                        $auto.fadeIn(200);
+                    } else
+                        $auto.fadeOut();
+                });
+            } else {
+                $auto.fadeOut();
+            }
+        }
+    });
+
+    function addCity($this, code) {
+        var url = 'http://api.sandbox.amadeus.com/v1.2/location/' + code + '/?apikey=PmD367pC6G8DrAXWLNPLw5UC3NM7R1n2';
+        $.get(url, function (json) {
+            $this.attr('data-lat', json.city.location.latitude);
+            $this.attr('data-long', json.city.location.longitude);
+        });
     }
 });
